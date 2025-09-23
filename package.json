@@ -1,0 +1,10 @@
+{
+	"scripts": {
+		"prepareFiles": "npx @biomejs/biome check --write",
+		"prepareFiles:frontend": "npx @biomejs/biome check --write frontend",
+		"prepareFiles:backend": "npx @biomejs/biome check --write backend"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.4"
+	}
+}
