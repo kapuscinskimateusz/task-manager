@@ -1,6 +1,10 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { RouterProvider, createRouter } from "@tanstack/react-router";
+import {
+	ErrorComponent,
+	RouterProvider,
+	createRouter,
+} from "@tanstack/react-router";
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 
@@ -9,10 +13,16 @@ import { routeTree } from "./routeTree.gen";
 
 import "./styles.css";
 
+const queryClient = new QueryClient();
+
 // Create a new router instance
 const router = createRouter({
 	routeTree,
-	context: {},
+	defaultPendingComponent: () => <div>Loading...</div>,
+	defaultErrorComponent: ({ error }) => <ErrorComponent error={error} />,
+	context: {
+		queryClient,
+	},
 	defaultPreload: "intent",
 	scrollRestoration: true,
 	defaultStructuralSharing: true,
@@ -25,8 +35,6 @@ declare module "@tanstack/react-router" {
 		router: typeof router;
 	}
 }
-
-const queryClient = new QueryClient();
 
 // Render the app
 const rootElement = document.getElementById("app");

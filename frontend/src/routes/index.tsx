@@ -1,23 +1,20 @@
-import taskService from "@/services/task";
+import { tasksQueryOptions } from "@/api/tasksQueryOptions";
 import type { Task } from "@/types/task";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
+	loader: ({ context: { queryClient } }) =>
+		queryClient.ensureQueryData(tasksQueryOptions()),
 	component: App,
 });
 
 function App() {
-	const { data: tasks, isLoading } = useQuery({
-		queryKey: ["tasks"],
-		queryFn: taskService.fetchTasks,
-	});
-
-	if (isLoading) return <div>Loading...</div>;
+	const { data: tasks } = useSuspenseQuery(tasksQueryOptions());
 
 	return (
 		<div>
-			<TaskList tasks={tasks ?? []} />
+			<TaskList tasks={tasks} />
 		</div>
 	);
 }
