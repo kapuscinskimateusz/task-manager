@@ -4,10 +4,7 @@ import { Task } from "../models/taskModel";
 const getTasks = async (_req: Request, res: Response) => {
 	const tasks = await Task.find();
 
-	res.status(200).json({
-		status: "success",
-		data: { tasks },
-	});
+	res.json(tasks);
 };
 
 const getTask = async (req: Request, res: Response) => {

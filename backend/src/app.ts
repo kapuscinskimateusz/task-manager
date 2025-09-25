@@ -1,3 +1,4 @@
+import cors from "cors";
 import express from "express";
 import { errorHandler } from "./middlewares/errorHandler";
 import taskRoutes from "./routes/taskRoutes";
@@ -5,6 +6,7 @@ import taskRoutes from "./routes/taskRoutes";
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.use("/api/tasks", taskRoutes);
 
