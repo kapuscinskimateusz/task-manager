@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts"
+		"dev": "nodemon --watch 'src/**/*.ts' --exec 'ts-node' src/server.ts",
+		"check": "npx @biomejs/biome check --write"
 	},
 	"keywords": [],
 	"author": "",
@@ -15,6 +16,7 @@
 		"mongoose": "^8.18.2"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "2.2.4",
 		"@types/express": "^5.0.3",
 		"@types/node": "^24.5.2",
 		"nodemon": "^3.1.10",
