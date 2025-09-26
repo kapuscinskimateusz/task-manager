@@ -1,5 +1,5 @@
-import { tasksQueryOptions } from "@/api/tasksQueryOptions";
-import type { Task } from "@/types/task";
+import { TaskList } from "@/features/tasks/components/TaskList";
+import { tasksQueryOptions } from "@/features/tasks/hooks/task.query";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 
@@ -16,15 +16,5 @@ function App() {
 		<div>
 			<TaskList tasks={tasks} />
 		</div>
-	);
-}
-
-function TaskList({ tasks }: { tasks: Task[] }) {
-	return (
-		<ul>
-			{tasks.map((task) => (
-				<li key={task._id}>{task.title}</li>
-			))}
-		</ul>
 	);
 }

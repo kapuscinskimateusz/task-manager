@@ -8,7 +8,7 @@ export default function Header() {
 					<Link to="/">Tasks</Link>
 				</div>
 				<div className="px-2 font-bold">
-					<Link to="/test">Test</Link>
+					<Link to="/new">Add New Task</Link>
 				</div>
 			</nav>
 		</header>

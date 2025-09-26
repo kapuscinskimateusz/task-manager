@@ -1,4 +1,4 @@
-import taskService from "@/services/task";
+import taskService from "@/services/task.service";
 import { queryOptions } from "@tanstack/react-query";
 
 export const tasksQueryOptions = () =>
