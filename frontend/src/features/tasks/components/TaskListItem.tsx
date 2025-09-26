@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import type { Task } from "@/types/task.types";
 import { useQueryClient } from "@tanstack/react-query";
 import { useDeleteTaskMutation } from "../hooks/task.mutation";
@@ -26,14 +27,14 @@ export function TaskListItem({ task }: TaskListItemProps) {
 
 	return (
 		<li>
-			{title}
-			<button
-				type="button"
-				disabled={isDeleting}
+			<span>{title}</span>
+			<Button
+				variant="destructive"
+				isLoading={isDeleting}
 				onClick={() => handleDelete(_id)}
 			>
-				{isDeleting ? "Deleting..." : "Delete"}
-			</button>
+				Delete
+			</Button>
 		</li>
 	);
 }
