@@ -1,70 +1,62 @@
-import type { Request, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
+
 import { Task } from "../models/taskModel";
+import { AppError } from "../utils/AppError";
+import { catchAsync } from "../utils/catchAsync";
 
-const getTasks = async (_req: Request, res: Response) => {
-	const tasks = await Task.find();
+const getTasks = catchAsync(
+	async (_req: Request, res: Response, _next: NextFunction) => {
+		const tasks = await Task.find();
 
-	res.json(tasks);
-};
+		res.json(tasks);
+	},
+);
 
-const getTask = async (req: Request, res: Response) => {
-	const { id } = req.params;
+const getTask = catchAsync(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const task = await Task.findById(req.params.id);
 
-	const task = await Task.findById(id);
-	if (!task) {
-		return res.status(404).json({
-			status: "fail",
-			message: "Task not found",
+		if (!task) {
+			return next(new AppError(`No task found with ID: ${req.params.id}`, 404));
+		}
+
+		res.json(task);
+	},
+);
+
+const createTask = catchAsync(
+	async (req: Request, res: Response, _next: NextFunction) => {
+		const task = await Task.create(req.body);
+
+		res.status(201).json(task);
+	},
+);
+
+const updateTask = catchAsync(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+			new: true,
+			runValidators: true,
 		});
-	}
 
-	res.status(200).json({
-		status: "success",
-		data: { task },
-	});
-};
+		if (!task) {
+			return next(new AppError(`No task found with ID: ${req.params.id}`, 404));
+		}
 
-const createTask = async (req: Request, res: Response) => {
-	const task = await Task.create(req.body);
+		res.json(task);
+	},
+);
 
-	res.status(201).json({
-		status: "success",
-		data: { task },
-	});
-};
+const deleteTask = catchAsync(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const task = await Task.findByIdAndDelete(req.params.id);
 
-const updateTask = async (req: Request, res: Response) => {
-	const { id } = req.params;
+		if (!task) {
+			return next(new AppError(`No task found with ID: ${req.params.id}`, 404));
+		}
 
-	const task = await Task.findByIdAndUpdate(id, req.body, {
-		new: true,
-		runValidators: true,
-	});
-	if (!task) {
-		return res.status(404).json({
-			status: "fail",
-			message: "Task not found",
-		});
-	}
-
-	res.status(200).json({
-		status: "success",
-		data: { task },
-	});
-};
-
-const deleteTask = async (req: Request, res: Response) => {
-	const { id } = req.params;
-
-	const task = await Task.findByIdAndDelete(id);
-	if (!task) {
-		return res.status(404).json({
-			status: "fail",
-			message: "Task not found",
-		});
-	}
-
-	res.status(204).send();
-};
+		res.status(204).send();
+	},
+);
 
 export default { getTasks, getTask, createTask, updateTask, deleteTask };

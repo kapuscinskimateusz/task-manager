@@ -4,13 +4,13 @@ dotenv.config();
 
 interface Config {
 	port: number;
-	nodeEnv: string;
+	nodeEnv: "development" | "production";
 	database: string;
 }
 
 const config: Config = {
 	port: Number(process.env.PORT) || 3000,
-	nodeEnv: process.env.NODE_ENV || "development",
+	nodeEnv: (process.env.NODE_ENV as Config["nodeEnv"]) || "development",
 	database:
 		process.env.DATABASE?.replace(
 			"<db_password>",
