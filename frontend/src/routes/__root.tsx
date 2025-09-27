@@ -3,7 +3,8 @@ import type { QueryClient } from "@tanstack/react-query";
 import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
 
-import Header from "../components/ui/Header";
+import { BreadcrumbNav } from "@/components/BreadcrumbNav";
+import { Header } from "../components/Header";
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 	{
@@ -15,6 +16,7 @@ function RootComponent() {
 	return (
 		<>
 			<Header />
+			<BreadcrumbNav />
 			<Outlet />
 			<TanstackDevtools
 				config={{

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import type { Task } from "@/types/task.types";
 import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "@tanstack/react-router";
 import { useDeleteTaskMutation } from "../hooks/task.mutation";
 
 interface TaskListItemProps {
@@ -27,7 +28,9 @@ export function TaskListItem({ task }: TaskListItemProps) {
 
 	return (
 		<li>
-			<span>{title}</span>
+			<Link to="/tasks/$id" params={{ id: _id }}>
+				{title}
+			</Link>
 			<Button
 				variant="destructive"
 				isLoading={isDeleting}
