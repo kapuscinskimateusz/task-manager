@@ -9,102 +9,48 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TasksRouteRouteImport } from './routes/tasks/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as TasksIndexRouteImport } from './routes/tasks/index'
-import { Route as TasksNewRouteImport } from './routes/tasks/new'
-import { Route as TasksIdRouteRouteImport } from './routes/tasks/$id/route'
-import { Route as TasksIdIndexRouteImport } from './routes/tasks/$id/index'
+import { Route as BoardIndexRouteImport } from './routes/board/index'
 
-const TasksRouteRoute = TasksRouteRouteImport.update({
-  id: '/tasks',
-  path: '/tasks',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const TasksIndexRoute = TasksIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => TasksRouteRoute,
-} as any)
-const TasksNewRoute = TasksNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => TasksRouteRoute,
-} as any)
-const TasksIdRouteRoute = TasksIdRouteRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => TasksRouteRoute,
-} as any)
-const TasksIdIndexRoute = TasksIdIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => TasksIdRouteRoute,
+const BoardIndexRoute = BoardIndexRouteImport.update({
+  id: '/board/',
+  path: '/board/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/tasks': typeof TasksRouteRouteWithChildren
-  '/tasks/$id': typeof TasksIdRouteRouteWithChildren
-  '/tasks/new': typeof TasksNewRoute
-  '/tasks/': typeof TasksIndexRoute
-  '/tasks/$id/': typeof TasksIdIndexRoute
+  '/board': typeof BoardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/tasks/new': typeof TasksNewRoute
-  '/tasks': typeof TasksIndexRoute
-  '/tasks/$id': typeof TasksIdIndexRoute
+  '/board': typeof BoardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/tasks': typeof TasksRouteRouteWithChildren
-  '/tasks/$id': typeof TasksIdRouteRouteWithChildren
-  '/tasks/new': typeof TasksNewRoute
-  '/tasks/': typeof TasksIndexRoute
-  '/tasks/$id/': typeof TasksIdIndexRoute
+  '/board/': typeof BoardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/tasks'
-    | '/tasks/$id'
-    | '/tasks/new'
-    | '/tasks/'
-    | '/tasks/$id/'
+  fullPaths: '/' | '/board'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/tasks/new' | '/tasks' | '/tasks/$id'
-  id:
-    | '__root__'
-    | '/'
-    | '/tasks'
-    | '/tasks/$id'
-    | '/tasks/new'
-    | '/tasks/'
-    | '/tasks/$id/'
+  to: '/' | '/board'
+  id: '__root__' | '/' | '/board/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  TasksRouteRoute: typeof TasksRouteRouteWithChildren
+  BoardIndexRoute: typeof BoardIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/tasks': {
-      id: '/tasks'
-      path: '/tasks'
-      fullPath: '/tasks'
-      preLoaderRoute: typeof TasksRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -112,68 +58,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tasks/': {
-      id: '/tasks/'
-      path: '/'
-      fullPath: '/tasks/'
-      preLoaderRoute: typeof TasksIndexRouteImport
-      parentRoute: typeof TasksRouteRoute
-    }
-    '/tasks/new': {
-      id: '/tasks/new'
-      path: '/new'
-      fullPath: '/tasks/new'
-      preLoaderRoute: typeof TasksNewRouteImport
-      parentRoute: typeof TasksRouteRoute
-    }
-    '/tasks/$id': {
-      id: '/tasks/$id'
-      path: '/$id'
-      fullPath: '/tasks/$id'
-      preLoaderRoute: typeof TasksIdRouteRouteImport
-      parentRoute: typeof TasksRouteRoute
-    }
-    '/tasks/$id/': {
-      id: '/tasks/$id/'
-      path: '/'
-      fullPath: '/tasks/$id/'
-      preLoaderRoute: typeof TasksIdIndexRouteImport
-      parentRoute: typeof TasksIdRouteRoute
+    '/board/': {
+      id: '/board/'
+      path: '/board'
+      fullPath: '/board'
+      preLoaderRoute: typeof BoardIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
 
-interface TasksIdRouteRouteChildren {
-  TasksIdIndexRoute: typeof TasksIdIndexRoute
-}
-
-const TasksIdRouteRouteChildren: TasksIdRouteRouteChildren = {
-  TasksIdIndexRoute: TasksIdIndexRoute,
-}
-
-const TasksIdRouteRouteWithChildren = TasksIdRouteRoute._addFileChildren(
-  TasksIdRouteRouteChildren,
-)
-
-interface TasksRouteRouteChildren {
-  TasksIdRouteRoute: typeof TasksIdRouteRouteWithChildren
-  TasksNewRoute: typeof TasksNewRoute
-  TasksIndexRoute: typeof TasksIndexRoute
-}
-
-const TasksRouteRouteChildren: TasksRouteRouteChildren = {
-  TasksIdRouteRoute: TasksIdRouteRouteWithChildren,
-  TasksNewRoute: TasksNewRoute,
-  TasksIndexRoute: TasksIndexRoute,
-}
-
-const TasksRouteRouteWithChildren = TasksRouteRoute._addFileChildren(
-  TasksRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  TasksRouteRoute: TasksRouteRouteWithChildren,
+  BoardIndexRoute: BoardIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

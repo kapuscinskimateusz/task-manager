@@ -1,7 +1,7 @@
-import { api } from "@/lib/axios/api.client";
-import type { Task } from "@/types/task.types";
+import { api } from "@/lib/axios";
+import type { Task } from "@/types/tasks.types";
 
-const fetchTasks = async () => {
+const getTasks = async () => {
 	const res = await api.get<Task[]>("/tasks");
 	return res.data;
 };
@@ -11,4 +11,4 @@ const deleteTask = async (id: Task["_id"]) => {
 	return res.data;
 };
 
-export default { fetchTasks, deleteTask };
+export default { getTasks, deleteTask };
