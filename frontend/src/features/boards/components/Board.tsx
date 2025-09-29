@@ -38,9 +38,6 @@ export function Board() {
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: statusesKeys.list() });
 			},
-			onError: (error) => {
-				console.error(error);
-			},
 		});
 	};
 
@@ -48,9 +45,6 @@ export function Board() {
 		deleteStatus(id, {
 			onSuccess: () => {
 				queryClient.invalidateQueries({ queryKey: statusesKeys.list() });
-			},
-			onError: (error) => {
-				console.error(error);
 			},
 		});
 	};
