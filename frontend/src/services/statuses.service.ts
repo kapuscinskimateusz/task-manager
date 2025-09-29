@@ -11,4 +11,9 @@ const createStatus = async (payload: CreateStatusPayload) => {
 	return res.data;
 };
 
-export default { getStatuses, createStatus };
+const deleteStatus = async (id: Status["_id"]) => {
+	const res = await api.delete<void>(`/statuses/${id}`);
+	return res.data;
+};
+
+export default { getStatuses, createStatus, deleteStatus };

@@ -1,14 +1,15 @@
 import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { PlusIcon } from "lucide-react";
 
 import {
 	getStatusesQueryOptions,
 	statusesKeys,
 	useCreateStatusMutation,
+	useDeleteStatusMutation,
 } from "@/api/statuses";
-import type { CreateStatusPayload } from "@/types/statuses.types";
-
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
+import type { CreateStatusPayload, Status } from "@/types/statuses.types";
+
 import { Column } from "./Column";
 
 export function Board() {
@@ -18,6 +19,9 @@ export function Board() {
 
 	const { mutate: createStatus, isPending: isStatusCreating } =
 		useCreateStatusMutation();
+
+	const { mutate: deleteStatus, isPending: isStatusDeleting } =
+		useDeleteStatusMutation();
 
 	const handleCreateStatus = () => {
 		// TODO - temporary solution
@@ -40,6 +44,17 @@ export function Board() {
 		});
 	};
 
+	const handleDeleteStatus = (id: Status["_id"]) => {
+		deleteStatus(id, {
+			onSuccess: () => {
+				queryClient.invalidateQueries({ queryKey: statusesKeys.list() });
+			},
+			onError: (error) => {
+				console.error(error);
+			},
+		});
+	};
+
 	return (
 		<div
 			className="grid"
@@ -48,7 +63,11 @@ export function Board() {
 			}}
 		>
 			{statuses.map((status) => (
-				<Column key={status._id} status={status} />
+				<Column
+					key={status._id}
+					status={status}
+					onDelete={handleDeleteStatus}
+				/>
 			))}
 
 			<Button
