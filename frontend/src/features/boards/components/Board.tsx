@@ -10,6 +10,12 @@ import {
 import { Button } from "@/components/ui/button";
 import type { CreateStatusPayload, Status } from "@/types/statuses.types";
 
+import {
+	Carousel,
+	CarouselContent,
+	CarouselItem,
+} from "@/components/ui/carousel";
+
 import { Column } from "./Column";
 
 export function Board() {
@@ -50,28 +56,24 @@ export function Board() {
 	};
 
 	return (
-		<div
-			className="grid"
-			style={{
-				gridTemplateColumns: `repeat(${statuses.length}, minmax(0, 1fr)) auto`,
-			}}
-		>
-			{statuses.map((status) => (
-				<Column
-					key={status._id}
-					status={status}
-					onDelete={handleDeleteStatus}
-				/>
-			))}
-
-			<Button
-				type="button"
-				size="icon"
-				isLoading={isStatusCreating}
-				onClick={handleCreateStatus}
-			>
-				<PlusIcon />
-			</Button>
-		</div>
+		<Carousel opts={{ slidesToScroll: "auto" }}>
+			<CarouselContent>
+				{statuses.map((status) => (
+					<CarouselItem key={status._id} className="flex-[0_0_20%]">
+						<Column status={status} onDelete={handleDeleteStatus} />
+					</CarouselItem>
+				))}
+				<CarouselItem className="flex-none">
+					<Button
+						type="button"
+						size="icon"
+						isLoading={isStatusCreating}
+						onClick={handleCreateStatus}
+					>
+						<PlusIcon />
+					</Button>
+				</CarouselItem>
+			</CarouselContent>
+		</Carousel>
 	);
 }
