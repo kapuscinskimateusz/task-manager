@@ -14,9 +14,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootComponent() {
 	return (
-		<>
+		<div className="flex flex-col h-screen">
 			<Header />
-			<Outlet />
+			<main className="flex-1">
+				<Outlet />
+			</main>
 			<Toaster />
 			<TanstackDevtools
 				config={{
@@ -29,6 +31,6 @@ function RootComponent() {
 					},
 				]}
 			/>
-		</>
+		</div>
 	);
 }

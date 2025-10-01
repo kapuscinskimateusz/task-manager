@@ -10,12 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import type { CreateStatusPayload, Status } from "@/types/statuses.types";
 
-import {
-	Carousel,
-	CarouselContent,
-	CarouselItem,
-} from "@/components/ui/carousel";
-
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Column } from "./Column";
 
 export function Board() {
@@ -56,24 +51,26 @@ export function Board() {
 	};
 
 	return (
-		<Carousel opts={{ slidesToScroll: "auto" }}>
-			<CarouselContent>
+		<ScrollArea className="h-full">
+			<div className="flex gap-4">
 				{statuses.map((status) => (
-					<CarouselItem key={status._id} className="flex-[0_0_20%]">
-						<Column status={status} onDelete={handleDeleteStatus} />
-					</CarouselItem>
+					<Column
+						key={status._id}
+						status={status}
+						onDelete={handleDeleteStatus}
+						className="flex-[0_0_270px]"
+					/>
 				))}
-				<CarouselItem className="flex-none">
-					<Button
-						type="button"
-						size="icon"
-						isLoading={isStatusCreating}
-						onClick={handleCreateStatus}
-					>
-						<PlusIcon />
-					</Button>
-				</CarouselItem>
-			</CarouselContent>
-		</Carousel>
+				<Button
+					type="button"
+					size="icon"
+					isLoading={isStatusCreating}
+					onClick={handleCreateStatus}
+				>
+					<PlusIcon />
+				</Button>
+			</div>
+			<ScrollBar orientation="horizontal" />
+		</ScrollArea>
 	);
 }

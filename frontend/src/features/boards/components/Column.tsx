@@ -1,3 +1,5 @@
+import { PlusIcon } from "lucide-react";
+
 import { MoreActions } from "@/components/MoreActions";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,17 +10,18 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 import type { Status } from "@/types/statuses.types";
-import { PlusIcon } from "lucide-react";
 
 interface ColumnProps {
 	status: Status;
 	onDelete: (id: Status["_id"]) => void;
+	className?: string;
 }
 
-export function Column({ status, onDelete }: ColumnProps) {
+export function Column({ status, onDelete, className }: ColumnProps) {
 	return (
-		<Card>
+		<Card className={cn(className)}>
 			<CardHeader>
 				<CardTitle>{status.title}</CardTitle>
 				<CardAction>
