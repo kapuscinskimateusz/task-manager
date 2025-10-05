@@ -1,13 +1,28 @@
 import type { NextFunction, Request, Response } from "express";
-import type { Model as MongooseModel } from "mongoose";
+import type { FilterQuery, Model as MongooseModel } from "mongoose";
 
 import { AppError } from "./AppError";
 import { catchAsync } from "./catchAsync";
 
 const getAll = <T>(Model: MongooseModel<T>) => {
 	return catchAsync(
-		async (_req: Request, res: Response, _next: NextFunction) => {
-			const doc = await Model.find();
+		async (req: Request, res: Response, _next: NextFunction) => {
+			const queryObj = { ...req.query };
+			const excludedFields = ["page", "sort", "limit", "fields"];
+			excludedFields.forEach((el) => {
+				delete queryObj[el];
+			});
+
+			let queryStr = JSON.stringify(queryObj);
+			queryStr = queryStr.replace(
+				/\b(gte|gt|lte|lt)\b/g,
+				(match) => `$${match}`,
+			);
+			const filterQuery = JSON.parse(queryStr) as FilterQuery<T>;
+
+			const query = Model.find(filterQuery);
+
+			const doc = await query;
 
 			res.status(200).json(doc);
 		},
